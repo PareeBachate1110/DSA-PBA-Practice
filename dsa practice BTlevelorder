@@ -1,0 +1,66 @@
+class Node:
+    def __init__(self, emp_id):
+        self.emp_id = emp_id
+        self.left = None
+        self.right = None
+
+
+def insert(root, emp_id):
+    newnode = Node(emp_id)
+
+    if root is None:
+        return newnode
+
+    curr = root
+
+    while True:
+        if emp_id < curr.emp_id:
+            if curr.left is None:
+                curr.left = newnode
+                break
+            curr = curr.left
+
+        elif emp_id > curr.emp_id:
+            if curr.right is None:
+                curr.right = newnode
+                break
+            curr = curr.right
+
+        else:
+            return root       # Ignore duplicate employee IDs
+
+    return root
+
+
+def levelorder(root):
+    if root is None:
+        return
+
+    queue = [root]
+
+    while queue:
+        level_size = len(queue)
+        result = []
+
+        for i in range(level_size):
+            curr = queue.pop(0)
+            result.append(str(curr.emp_id))
+
+            if curr.left is not None:
+                queue.append(curr.left)
+
+            if curr.right is not None:
+                queue.append(curr.right)
+
+        print(" ".join(result))
+
+
+root = None
+
+n = int(input())
+emp_ids = list(map(int, input().split()))
+
+for emp_id in emp_ids[:n]:
+    root = insert(root, emp_id)
+
+levelorder(root)
