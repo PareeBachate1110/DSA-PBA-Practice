@@ -1,0 +1,25 @@
+def dfs(vertex):
+    visited[vertex] = True
+    result.append(str(vertex))
+
+    for i in range(n):
+        if matrix[vertex][i] == 1 and visited[i] == False:
+            dfs(i)
+
+
+n = int(input())
+
+matrix = []
+
+for i in range(n):
+    row = list(map(int, input().split()))
+    matrix.append(row)
+
+start = int(input())
+
+visited = [False] * n
+result = []
+
+dfs(start)
+
+print("DFS : " + " ".join(result))
