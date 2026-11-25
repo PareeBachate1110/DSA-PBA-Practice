@@ -1,0 +1,109 @@
+class Node:
+    def __init__(self, book_id):
+        self.book_id = book_id
+        self.left = None
+        self.right = None
+
+
+def insert(root, book_id):
+    newnode = Node(book_id)
+
+    if root is None:
+        return newnode
+
+    curr = root
+
+    while True:
+        if book_id < curr.book_id:
+            if curr.left is None:
+                curr.left = newnode
+                break
+            curr = curr.left
+
+        elif book_id > curr.book_id:
+            if curr.right is None:
+                curr.right = newnode
+                break
+            curr = curr.right
+
+        else:
+            return root       # Ignore duplicate Book IDs
+
+    return root
+
+
+def inorder(root):
+    stack = []
+    curr = root
+    result = []
+
+    while stack or curr is not None:
+
+        while curr is not None:
+            stack.append(curr)
+            curr = curr.left
+
+        curr = stack.pop()
+        result.append(str(curr.book_id))
+
+        curr = curr.right
+
+    return "Inorder : " + " ".join(result)
+
+
+def preorder(root):
+    if root is None:
+        return "Preorder :"
+
+    stack = [root]
+    result = []
+
+    while stack:
+        curr = stack.pop()
+        result.append(str(curr.book_id))
+
+        if curr.right is not None:
+            stack.append(curr.right)
+
+        if curr.left is not None:
+            stack.append(curr.left)
+
+    return "Preorder : " + " ".join(result)
+
+
+def postorder(root):
+    stack = []
+    result = []
+    curr = root
+    last_visited = None
+
+    while stack or curr is not None:
+
+        if curr is not None:
+            stack.append(curr)
+            curr = curr.left
+
+        else:
+            peek = stack[-1]
+
+            if peek.right is not None and last_visited != peek.right:
+                curr = peek.right
+
+            else:
+                result.append(str(peek.book_id))
+                last_visited = stack.pop()
+
+    return "Postorder : " + " ".join(result)
+
+
+root = None
+
+n = int(input())
+book_ids = list(map(int, input().split()))
+
+for book_id in book_ids[:n]:
+    root = insert(root, book_id)
+
+print(inorder(root))
+print(preorder(root))
+print(postorder(root))
