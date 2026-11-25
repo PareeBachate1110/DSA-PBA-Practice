@@ -1,0 +1,84 @@
+class HashTable:
+    def __init__(self, size):
+        self.size = size
+        self.table = [-1] * size
+
+    def hash_function(self, key):
+        return key % self.size
+
+    def insert_without_replacement(self, key):
+        index = self.hash_function(key)
+
+        while self.table[index] != -1:
+            index = (index + 1) % self.size
+
+        self.table[index] = key
+
+    def insert_with_replacement(self, key):
+        index = self.hash_function(key)
+
+        if self.table[index] == -1:
+            self.table[index] = key
+            return
+
+        if self.hash_function(self.table[index]) != index:
+            displaced = self.table[index]
+            self.table[index] = key
+            key = displaced
+
+        index = (index + 1) % self.size
+
+        while self.table[index] != -1:
+            index = (index + 1) % self.size
+
+        self.table[index] = key
+
+    def search(self, key):
+        index = self.hash_function(key)
+        start = index
+
+        while self.table[index] != -1:
+            if self.table[index] == key:
+                return index
+
+            index = (index + 1) % self.size
+
+            if index == start:
+                break
+
+        return -1
+
+    def display(self):
+        for i in range(self.size):
+            print(i, ":", self.table[i])
+
+
+size = int(input("Enter hash table size: "))
+h = HashTable(size)
+
+print("1. Linear Probing Without Replacement")
+print("2. Linear Probing With Replacement")
+
+choice = int(input("Enter your choice: "))
+
+n = int(input("Enter number of keys: "))
+
+for i in range(n):
+    key = int(input("Enter key: "))
+
+    if choice == 1:
+        h.insert_without_replacement(key)
+
+    elif choice == 2:
+        h.insert_with_replacement(key)
+
+print("Hash Table:")
+h.display()
+
+key = int(input("Enter key to search: "))
+result = h.search(key)
+
+if result == -1:
+    print("Key not found")
+else:
+    print("Key found at index:", result)
