@@ -1,0 +1,32 @@
+def bfs(start):
+    visited = [False] * n
+    queue = [start]
+    result = []
+    front = 0
+
+    visited[start] = True
+
+    while front < len(queue):
+        vertex = queue[front]
+        front += 1
+
+        result.append(str(vertex))
+
+        for i in graph[vertex]:
+            if visited[i] == False:
+                visited[i] = True
+                queue.append(i)
+
+    return "BFS : " + " ".join(result)
+
+
+n = int(input())
+
+graph = []
+for i in range(n):
+    neighbours = list(map(int, input().split()))
+    graph.append(neighbours)
+
+start = int(input())
+
+print(bfs(start))
